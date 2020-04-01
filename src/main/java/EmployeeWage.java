@@ -2,19 +2,30 @@ public class EmployeeWage {
     //Constants
     public static final int IS_FULL_TIME=1;
     public static final int IS_PART_TIME=2;
-    public static final int EMP_RATE_PER_HOURS=20;
-    public static final int NUM_OF_WORKING_DAYS=20;
+
+    private String company;
+    private int empRatePerHour;
+    private int numOfWorkingDays;
+    private int maxHoursPerMonth;
+
+    //Constructor
+    EmployeeWage(String company,int empRatePerHour,int numOfWorkingDays, int maxHoursPerMonth) {
+        this.company=company;
+        this.empRatePerHour=empRatePerHour;
+        this.numOfWorkingDays=numOfWorkingDays;
+        this.maxHoursPerMonth=maxHoursPerMonth;
+    }
 
     //Checking employee is present or absent
-    public static void calculateWagesForMonth() {
+    public double calculateEmployeeWageForCompany() {
         //Initializing variables
-        int empHrs=0;
-        int empWage=0;
-        int dayCount;
-        double perDaySalary, totalSalary=0;
+        int dayCount=0,totalEmpHrs=0;
+        int empHrs;
 
-        for( dayCount=1; dayCount<=NUM_OF_WORKING_DAYS;dayCount++ )
+        //Calculating Wages till a condition of total working hours or days is reached for a month
+        while( totalEmpHrs <= maxHoursPerMonth && dayCount < numOfWorkingDays)
         {
+            dayCount++;
             int empCheck = (int) Math.floor(Math.random() * 10) % 3;
             switch (empCheck) {
                 case IS_FULL_TIME:
@@ -26,16 +37,21 @@ public class EmployeeWage {
                 default:
                     empHrs = 0;
             }
-
-            //calculating employee wages for month
-            perDaySalary = empHrs * EMP_RATE_PER_HOURS;
-            totalSalary=totalSalary+perDaySalary;
+            totalEmpHrs=totalEmpHrs+empHrs;
         }
-        System.out.println("Monthly Employee wages : " + totalSalary);
+        //returns employee wages for month
+        return totalEmpHrs*empRatePerHour;
     }
+
     public static void main(String[] args) {
         //Displaying Welcome Message
         System.out.println("Welcome To Employee Wage Computation");
-        calculateWagesForMonth();
+        //calculateWagesForMonth();
+
+        EmployeeWage dMart=new EmployeeWage("DMart",30,20,100);
+        EmployeeWage reliance=new EmployeeWage("Reliance",40,30,150);
+
+        System.out.println("Total Employee Wage For Company : " + dMart.company + " is : " + dMart.calculateEmployeeWageForCompany());
+        System.out.println("Total Employee Wage For Company : " + reliance.company + " is : " + reliance.calculateEmployeeWageForCompany());
     }
 }
